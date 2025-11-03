@@ -15,6 +15,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * JSF managed bean controlling shopping cart operations and order checkout flow.
+ * Uses CDI conversation scope to maintain cart state across multiple request cycles
+ * during the shopping and checkout process.
+ * 
+ * <p>Key collaborators:</p>
+ * <ul>
+ *   <li>{@link CatalogService} - Item lookups and validation</li>
+ *   <li>{@link OrderService} - Order creation from cart contents</li>
+ *   <li>{@link Customer} - Logged-in customer for order association</li>
+ *   <li>{@link Conversation} - CDI conversation scope management</li>
+ * </ul>
+ * 
+ * <p>State management:</p>
+ * <ul>
+ *   <li>Conversation-scoped for multi-step checkout process</li>
+ *   <li>Cart items maintained across page navigations</li>
+ *   <li>Conversation begins when first item added, ends after order confirmation</li>
+ * </ul>
+ * 
+ * <p>Checkout flow: Add Items → Review Cart → Confirm Order → Order Confirmation</p>
+ * 
  * @author Antonio Goncalves
  *         http://www.antoniogoncalves.org
  *         --
@@ -48,25 +69,34 @@ public class ShoppingCartController extends Controller implements Serializable {
     // =              Public Methods        =
     // ======================================
 
+    /**
+     * Adds an item to the shopping cart, starting a conversation if needed.
+     * If item already exists in cart, increments quantity; otherwise adds new cart item.
+     * 
+     * @return navigation outcome to showcart.faces to display updated cart
+     * TODO: Consider using Map<Long, CartItem> for O(1) item lookup instead of linear search
+     */
     public String addItemToCart() {
         Item item = catalogBean.findItem(getParamId("itemId"));
 
-        // Start conversation
+        // Initialize conversation scope and cart on first item addition
         if (conversation.isTransient()) {
             cartItems = new ArrayList<CartItem>();
             conversation.begin();
         }
 
         boolean itemFound = false;
+        // Linear search through cart items - potential performance bottleneck for large carts
         for (CartItem cartItem : cartItems) {
-            // If item already exists in the shopping cart we just change the quantity
+            // If item already exists in cart, increment its quantity
             if (cartItem.getItem().equals(item)) {
                 cartItem.setQuantity(cartItem.getQuantity() + 1);
                 itemFound = true;
+                break; // TODO: Add break to avoid unnecessary iterations
             }
         }
         if (!itemFound)
-            // Otherwise it's added to the shopping cart
+            // Add new item to cart with initial quantity of 1
             cartItems.add(new CartItem(item, 1));
 
         return "showcart.faces";
@@ -93,11 +123,20 @@ public class ShoppingCartController extends Controller implements Serializable {
         return "confirmorder.faces";
     }
 
+    /**
+     * Creates order from cart contents and completes the checkout process.
+     * Clears cart and ends conversation after successful order creation.
+     * 
+     * @return navigation outcome to orderconfirmed.faces showing order confirmation
+     * TODO: Risk - no rollback if order creation fails after cart is cleared
+     * TODO: Consider inventory validation before order confirmation
+     */
     public String confirmOrder() {
+        // Create order from current cart state and customer/payment info
         order = orderBean.createOrder(getCustomer(), creditCard, getCartItems());
-        cartItems.clear();
+        cartItems.clear(); // Clear cart after successful order creation
 
-        // Stop conversation
+        // End conversation scope - checkout process complete
         if (!conversation.isTransient()) {
             conversation.end();
         }
@@ -114,6 +153,13 @@ public class ShoppingCartController extends Controller implements Serializable {
     }
 
 
+    /**
+     * Calculates the total cost of all items in the shopping cart.
+     * 
+     * @return total cart value, or 0.0f if cart is empty
+     * TODO: Performance - consider caching total and invalidating on cart changes
+     * TODO: Currency and rounding considerations for monetary calculations
+     */
     public Float getTotal() {
 
         if (cartItems == null || cartItems.isEmpty())
@@ -121,7 +167,7 @@ public class ShoppingCartController extends Controller implements Serializable {
 
         Float total = 0f;
 
-        // Sum up the quantities
+        // Sum up all line item subtotals (quantity * unit price)
         for (CartItem cartItem : cartItems) {
             total += (cartItem.getSubTotal());
         }

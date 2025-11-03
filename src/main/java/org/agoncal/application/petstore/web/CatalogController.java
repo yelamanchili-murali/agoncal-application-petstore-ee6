@@ -12,14 +12,33 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
+ * JSF managed bean controlling catalog browsing operations including product discovery,
+ * item searches, and navigation between catalog pages. Serves as the web layer
+ * coordinator between JSF views and the catalog service.
+ * 
+ * <p>Key collaborators:</p>
+ * <ul>
+ *   <li>{@link CatalogService} - Business logic for catalog operations</li>
+ *   <li>JSF Views - showproducts.xhtml, showitems.xhtml, showitem.xhtml, searchresult.xhtml</li>
+ * </ul>
+ * 
+ * <p>State management:</p>
+ * <ul>
+ *   <li>Session-scoped for user navigation state retention</li>
+ *   <li>Holds current category, product, and item selections</li>
+ *   <li>Maintains search results and criteria</li>
+ * </ul>
+ * 
+ * <p>Navigation flow: Categories → Products → Items → Item Details</p>
+ * 
  * @author Antonio Goncalves
  *         http://www.antoniogoncalves.org
  *         --
  */
 
 @Named
-//@RequestScoped TODO should be request scoped
-@SessionScoped
+//@RequestScoped TODO: Should be request scoped for better memory usage
+@SessionScoped // TODO: Risk - memory accumulation in long sessions
 @Loggable
 @CatchException
 public class CatalogController extends Controller implements Serializable {
@@ -45,22 +64,43 @@ public class CatalogController extends Controller implements Serializable {
     // =              Public Methods        =
     // ======================================
 
+    /**
+     * Finds all products in a specific category and navigates to product listing page.
+     * 
+     * @return navigation outcome to showproducts.faces view
+     */
     public String doFindProducts() {
         products = catalogService.findProducts(categoryName);
         return "showproducts.faces";
     }
 
+    /**
+     * Loads a specific product and its items, then navigates to item listing page.
+     * 
+     * @return navigation outcome to showitems.faces view
+     */
     public String doFindItems() {
         product = catalogService.findProduct(productId);
         items = catalogService.findItems(productId);
         return "showitems.faces";
     }
 
+    /**
+     * Loads a specific item's details and navigates to item detail page.
+     * 
+     * @return navigation outcome to showitem.faces view
+     */
     public String doFindItem() {
         item = catalogService.findItem(itemId);
         return "showitem.faces";
     }
 
+    /**
+     * Performs keyword search across items and navigates to search results with redirect.
+     * 
+     * @return navigation outcome to searchresult.faces with keyword parameter and redirect
+     * TODO: Consider pagination for large search result sets
+     */
     public String doSearch() {
         items = catalogService.searchItems(keyword);
         return "searchresult.faces?keyword=" + keyword + "&faces-redirect=true";
