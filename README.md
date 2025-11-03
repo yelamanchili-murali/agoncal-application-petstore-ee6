@@ -1,3 +1,56 @@
+## 🚀 Modernization Journey Overview
+
+This repository documents a comprehensive **Java EE 6 → Spring Boot 3** modernization journey. The migration is in progress with thorough behavioral preservation planning and comprehensive documentation.
+
+### Modernization Phases
+
+#### 1. **DOCUMENTATION ENHANCEMENT** 📋
+**Status:** ✅ Complete  
+**Files:** [DOCUMENTATION_ENHANCEMENT_REPORT.md](DOCUMENTATION_ENHANCEMENT_REPORT.md)
+
+Comprehensive Javadoc and inline documentation added to core application classes. Makes legacy code readable and maintainable before refactoring activities, providing clear understanding of business logic and component interactions.
+
+#### 2. **MODERNISATION ASSESSMENT** 🎯
+**Status:** ✅ Complete  
+**Files:** [MODERNIZATION_ASSESSMENT.md](MODERNIZATION_ASSESSMENT.md)
+
+Repository reconnaissance and modernization brief identifying migration scope from Java EE 6 (JSF, EJB, JPA) to Spring Boot 3. Includes framework inventory, dependency analysis, and migration strategy planning.
+
+#### 3. **APPLICATION SPECIFICATION** 📖
+**Status:** ✅ Complete  
+**Files:** [APPLICATION_SPECIFICATION.md](APPLICATION_SPECIFICATION.md)
+
+Reverse-engineered specification capturing current application behavior, domain model entities, validation rules, and business workflows. Establishes behavioral baseline for migration validation and Spring Boot target architecture.
+
+#### 4. **CHARACTERIZATION TEST SUITE** 🧪
+**Status:** ✅ Complete  
+**Files:** [CHARACTERISATION_TESTS.md](CHARACTERISATION_TESTS.md)
+
+Comprehensive test suite capturing existing behavior across EJB services, JPA persistence, and JSF navigation layers. Provides 100% EJB service coverage and complete regression protection for Spring Boot migration.
+
+#### 5. **SPRING BOOT MIGRATION PLAN** 📋
+**Status:** ✅ Complete  
+**Files:** [SPRINGBOOT_MIGRATION_PLAN.md](SPRINGBOOT_MIGRATION_PLAN.md) | [docs/migration/](docs/migration/)
+
+Detailed step-by-step migration strategy covering framework transformation from Java EE 6 to Spring Boot 3.x, including build system updates, dependency migration, configuration conversion, and architectural modernization.
+
+#### 6. **SPRING BOOT MIGRATION EXECUTION** 🔄
+**Status:** 🚧 In Progress  
+**Files:** Coming Soon
+
+Active implementation of Spring Boot 3.x migration including EJB to Spring service conversion, JSF to Spring MVC transformation, and JPA configuration modernization with Java 17 compatibility.
+
+### Migration Achievements
+
+- ✅ **Java EE 6 Analysis** complete with full component inventory
+- ✅ **Behavioral Documentation** captured in comprehensive test suite  
+- ✅ **Migration Strategy** defined for Spring Boot 3.x target
+- ✅ **Risk Assessment** completed with rollback procedures
+- 🚧 **Spring Boot Implementation** in active development
+- 🎯 **Target**: Spring Boot 3.x + Spring MVC + Thymeleaf + Java 17
+
+---
+
 # Application - Petstore Java EE 6
 
 * *Author* : [Antonio Goncalves](http://www.antoniogoncalves.org)
