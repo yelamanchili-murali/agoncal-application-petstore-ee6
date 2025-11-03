@@ -23,27 +23,27 @@ This document provides a comprehensive migration plan for transitioning the **Pe
 
 ```
 ┌─────────────────────────────────────────┐    ┌─────────────────────────────────────────┐
-│              Java EE 6                  │    │            Spring Boot 3.x             │
+│              Java EE 6                  │    │            Spring Boot 3.x              │
 ├─────────────────────────────────────────┤    ├─────────────────────────────────────────┤
 │ Presentation Layer                      │    │ Presentation Layer                      │
-│ • JSF 2.0 + Facelets                  │───▶│ • Spring MVC + Thymeleaf              │
-│ • faces-config.xml navigation          │    │ • RESTful routing                      │
-│ • @Named managed beans                 │    │ • @Controller classes                  │
+│ • JSF 2.0 + Facelets                    │───▶| • Spring MVC + Thymeleaf               │
+│ • faces-config.xml navigation           │    │ • RESTful routing                       │
+│ • @Named managed beans                  │    │ • @Controller classes                   │
 ├─────────────────────────────────────────┤    ├─────────────────────────────────────────┤
-│ Business Layer                         │    │ Business Layer                         │
-│ • @Stateless EJBs                     │───▶│ • @Service classes                     │
-│ • Container-managed transactions       │    │ • @Transactional methods              │
-│ • @Inject dependency injection        │    │ • Constructor injection               │
+│ Business Layer                          │    │ Business Layer                          │
+│ • @Stateless EJBs                       │───▶│ • @Service classes                     │
+│ • Container-managed transactions        │    │ • @Transactional methods                │
+│ • @Inject dependency injection          │    │ • Constructor injection                 │
 ├─────────────────────────────────────────┤    ├─────────────────────────────────────────┤
-│ Persistence Layer                      │    │ Persistence Layer                      │
-│ • JPA 2.0 entities                    │───▶│ • JPA 3.1 entities (jakarta.*)       │
-│ • persistence.xml configuration        │    │ • Spring Data JPA repositories       │
-│ • Container-managed EntityManager      │    │ • application.yml configuration       │
+│ Persistence Layer                       │    │ Persistence Layer                       │
+│ • JPA 2.0 entities                      │───▶│ • JPA 3.1 entities (jakarta.*)         │
+│ • persistence.xml configuration         │    │ • Spring Data JPA repositories          │
+│ • Container-managed EntityManager       │    │ • application.yml configuration         │
 ├─────────────────────────────────────────┤    ├─────────────────────────────────────────┤
-│ Infrastructure                         │    │ Infrastructure                         │
-│ • Application Server (GlassFish/JBoss) │───▶│ • Embedded Tomcat                     │
-│ • web.xml + beans.xml                 │    │ • Spring Boot auto-configuration      │
-│ • JNDI resources                      │    │ • application.yml properties          │
+│ Infrastructure                          │    │ Infrastructure                          │
+│ • Application Server (GlassFish/JBoss)  │───▶│ • Embedded Tomcat                      │
+│ • web.xml + beans.xml                   │    │ • Spring Boot auto-configuration        │
+│ • JNDI resources                        │    │ • application.yml properties            │
 └─────────────────────────────────────────┘    └─────────────────────────────────────────┘
 ```
 
@@ -53,7 +53,7 @@ The migration is structured into 8 distinct phases, each with specific deliverab
 
 ### Phase 1: Build & Packaging Migration
 **Duration**: 1 week  
-**Deliverable**: [`01-build-and-packaging.md`](./docs/migration/01-build-and-packaging.md)
+**Deliverable**: [`01-build-and-packaging.md`](./migration/01-build-and-packaging.md)
 
 **Objectives**:
 - Migrate from WAR packaging to executable JAR
@@ -84,7 +84,7 @@ The migration is structured into 8 distinct phases, each with specific deliverab
 
 ### Phase 2: Application Entry & Bootstrapping
 **Duration**: 1 week  
-**Deliverable**: [`02-bootstrapping.md`](./docs/migration/02-bootstrapping.md)
+**Deliverable**: [`02-bootstrapping.md`](./migration/02-bootstrapping.md)
 
 **Objectives**:
 - Create Spring Boot main application class
@@ -107,7 +107,7 @@ public class PetstoreApplication {
 
 ### Phase 3: Configuration Migration  
 **Duration**: 1 week  
-**Deliverable**: [`03-config-conversion.md`](./docs/migration/03-config-conversion.md)
+**Deliverable**: [`03-config-conversion.md`](./migration/03-config-conversion.md)
 
 **Objectives**:
 - Convert persistence.xml → application.yml
@@ -133,7 +133,7 @@ spring:
 
 ### Phase 4: EJB to Spring Services Migration
 **Duration**: 2 weeks  
-**Deliverable**: [`04-ejb-to-spring.md`](./docs/migration/04-ejb-to-spring.md)
+**Deliverable**: [`04-ejb-to-spring.md`](./migration/04-ejb-to-spring.md)
 
 **Objectives**:
 - Convert @Stateless EJBs to @Service classes
@@ -166,7 +166,7 @@ public class CatalogService {
 
 ### Phase 5: JSF to Spring MVC Migration
 **Duration**: 3 weeks  
-**Deliverable**: [`05-jsf-to-springmvc.md`](./docs/migration/05-jsf-to-springmvc.md)
+**Deliverable**: [`05-jsf-to-springmvc.md`](./migration/05-jsf-to-springmvc.md)
 
 **Objectives**:
 - Replace JSF managed beans with Spring MVC controllers
@@ -201,7 +201,7 @@ public class CatalogController {
 
 ### Phase 6: Observability Implementation
 **Duration**: 1 week  
-**Deliverable**: [`06-observability.md`](./docs/migration/06-observability.md)
+**Deliverable**: [`06-observability.md`](./migration/06-observability.md)
 
 **Objectives**:
 - Add Spring Boot Actuator endpoints
@@ -227,7 +227,7 @@ management:
 
 ### Phase 7: Test Migration & Validation
 **Duration**: 2 weeks  
-**Deliverable**: [`07-test-migration.md`](./docs/migration/07-test-migration.md)
+**Deliverable**: [`07-test-migration.md`](./migration/07-test-migration.md)
 
 **Objectives**:
 - Convert Arquillian tests to Spring Boot tests
@@ -266,7 +266,7 @@ class CatalogServiceTest {
 
 ### Phase 8: Risk Mitigation & Rollback Planning
 **Duration**: 1 week  
-**Deliverable**: [`08-risks-and-rollback.md`](./docs/migration/08-risks-and-rollback.md)
+**Deliverable**: [`08-risks-and-rollback.md`](./migration/08-risks-and-rollback.md)
 
 **Objectives**:
 - Document comprehensive risk assessment
@@ -301,62 +301,62 @@ class CatalogServiceTest {
 ┌─────────────────────────┐
 │ Application Server      │
 ├─────────────────────────┤
-│ • GlassFish 3.x        │
-│ • JBoss AS 7.x         │  
-│ • TomEE 1.x            │
+│ • GlassFish 3.x         │
+│ • JBoss AS 7.x          │  
+│ • TomEE 1.x             │
 └─────────────────────────┘
 ┌─────────────────────────┐
-│ Web Framework          │
+│ Web Framework           │
 ├─────────────────────────┤
-│ • JSF 2.0              │
-│ • Facelets             │
-│ • Navigation Rules     │
+│ • JSF 2.0               │
+│ • Facelets              │
+│ • Navigation Rules      │
 └─────────────────────────┘
 ┌─────────────────────────┐
-│ Business Logic         │
+│ Business Logic          │
 ├─────────────────────────┤
-│ • EJB 3.1              │
-│ • CDI 1.0              │
-│ • Container Managed TX │
+│ • EJB 3.1               │
+│ • CDI 1.0               │
+│ • Container Managed TX  │
 └─────────────────────────┘
 ┌─────────────────────────┐
-│ Data Access            │
+│ Data Access             │
 ├─────────────────────────┤
-│ • JPA 2.0              │
-│ • EclipseLink/Hibernate│
-│ • JNDI DataSources     │
+│ • JPA 2.0               │
+│ • EclipseLink/Hibernate │
+│ • JNDI DataSources      │
 └─────────────────────────┘
 ```
 
 ### After (Spring Boot 3.x)
 ```
 ┌─────────────────────────┐
-│ Embedded Server        │
+│ Embedded Server         │
 ├─────────────────────────┤
-│ • Embedded Tomcat      │
-│ • Executable JAR       │
-│ • Auto-configuration   │
+│ • Embedded Tomcat       │
+│ • Executable JAR        │
+│ • Auto-configuration    │
 └─────────────────────────┘
 ┌─────────────────────────┐
-│ Web Framework          │
+│ Web Framework           │
 ├─────────────────────────┤
-│ • Spring MVC 6.x       │
-│ • Thymeleaf 3.x        │
-│ • RESTful Controllers  │
+│ • Spring MVC 6.x        │
+│ • Thymeleaf 3.x         │
+│ • RESTful Controllers   │
 └─────────────────────────┘
 ┌─────────────────────────┐
-│ Business Logic         │
+│ Business Logic          │
 ├─────────────────────────┤
-│ • Spring Services      │
-│ • Spring DI            │
-│ • Spring Transactions  │
+│ • Spring Services       │
+│ • Spring DI             │
+│ • Spring Transactions   │
 └─────────────────────────┘
 ┌─────────────────────────┐
-│ Data Access            │
+│ Data Access             │
 ├─────────────────────────┤
-│ • JPA 3.1 (jakarta.*)  │
-│ • Spring Data JPA      │
-│ • HikariCP Pool        │
+│ • JPA 3.1 (jakarta.*)   │
+│ • Spring Data JPA       │
+│ • HikariCP Pool         │
 └─────────────────────────┘
 ```
 
@@ -480,42 +480,42 @@ class CatalogServiceTest {
 
 This migration plan consists of the following detailed implementation guides:
 
-1. **[Build & Packaging Migration](./docs/migration/01-build-and-packaging.md)**
+1. **[Build & Packaging Migration](./migration/01-build-and-packaging.md)**
    - Maven POM transformation
    - Java 17 upgrade strategy
    - Dependency management
 
-2. **[Application Bootstrapping](./docs/migration/02-bootstrapping.md)**
+2. **[Application Bootstrapping](./migration/02-bootstrapping.md)**
    - Spring Boot main class creation
    - Component scanning configuration
    - Web configuration setup
 
-3. **[Configuration Migration](./docs/migration/03-config-conversion.md)**
+3. **[Configuration Migration](./migration/03-config-conversion.md)**
    - persistence.xml → application.yml
    - Profile-based configuration
    - Thymeleaf setup
 
-4. **[EJB to Spring Services](./docs/migration/04-ejb-to-spring.md)**
+4. **[EJB to Spring Services](./migration/04-ejb-to-spring.md)**
    - Service layer transformation
    - Transaction management migration
    - Dependency injection patterns
 
-5. **[JSF to Spring MVC](./docs/migration/05-jsf-to-springmvc.md)**
+5. **[JSF to Spring MVC](./migration/05-jsf-to-springmvc.md)**
    - Controller implementation
    - Thymeleaf template creation
    - Navigation flow migration
 
-6. **[Observability Setup](./docs/migration/06-observability.md)**
+6. **[Observability Setup](./migration/06-observability.md)**
    - Actuator configuration
    - Health checks and metrics
    - Monitoring integration
 
-7. **[Test Migration Strategy](./docs/migration/07-test-migration.md)**
+7. **[Test Migration Strategy](./migration/07-test-migration.md)**
    - Arquillian → Spring Boot tests
    - Characterisation test preservation
    - Integration test setup
 
-8. **[Risks & Rollback Planning](./docs/migration/08-risks-and-rollback.md)**
+8. **[Risks & Rollback Planning](./migration/08-risks-and-rollback.md)**
    - Comprehensive risk assessment
    - Rollback procedures
    - Contingency planning
@@ -523,7 +523,3 @@ This migration plan consists of the following detailed implementation guides:
 Each document provides detailed technical guidance, code examples, and migration steps for successful completion of the Java EE 6 to Spring Boot 3.x transition while preserving all existing business functionality.
 
 ---
-
-**Migration Team Contact**: [migration-team@company.com]  
-**Document Version**: 1.0  
-**Last Updated**: November 2025
